@@ -1,0 +1,30 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mimir
+  namespace: "{{ openshift_namespace }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mimir
+  template:
+    metadata:
+      labels:
+        app: mimir
+    spec:
+      containers:
+      - name: mimir
+        image: docker.io/grafana/mimir
+        args:
+          - "--config.file=/etc/mimir/config.yaml"
+        ports:
+          - containerPort: 9009
+        workingDir: /tmp
+        volumeMounts:
+          - name: config-volume
+            mountPath: /etc/mimir
+      volumes:
+        - name: config-volume
+          configMap:
+            name: "mimir-config"

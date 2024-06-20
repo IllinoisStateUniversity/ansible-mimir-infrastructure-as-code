@@ -1,0 +1,47 @@
+---
+- name: Mimir - Infrastructure as Code
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars_files: "vars/{{ mimir_environment }}.yml"
+
+  tasks:
+    - name: Get Mimir Ceph Account from Keeper
+      keepersecurity.keeper_secrets_manager.keeper_get_record:
+        title: "mimir-test-ceph"
+      register: keeper_mimir_ceph
+      no_log: true
+
+    - name: Create ConfigMap for Mimir Configuration
+      redhat.openshift.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: "mimir-config"
+            namespace: "{{ openshift_namespace }}"
+          data:
+            config.yaml: "{{ lookup('template', 'templates/mimir-config.yml.j2') }}"
+
+    - name: Deploy Mimir Instance
+      redhat.openshift.k8s:
+        state: present
+        definition: "{{ lookup('template', 'templates/mimir-deploy.yml.j2') }}"
+
+    - name: Expose the Mimir Port via Services
+      redhat.openshift.k8s:
+        state: present
+        definition:
+          kind: Service
+          apiVersion: v1
+          metadata:
+            name: "mimir-service"
+            namespace: "{{ openshift_namespace }}"
+          spec:
+            selector:
+              app: "mimir"
+            ports:
+              - protocol: TCP
+                port: 9009
+                targetPort: 9009

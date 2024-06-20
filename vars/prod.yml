@@ -1,0 +1,5 @@
+---
+openshift_namespace: metrics
+s3_endpoint: s3.example.com
+blocks_bucket_name: mimir-tsdb
+ruler_bucket_name: mimir-ruler

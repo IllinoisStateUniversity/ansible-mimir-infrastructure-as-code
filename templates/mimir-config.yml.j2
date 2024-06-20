@@ -1,0 +1,20 @@
+---
+server:
+  http_listen_port: 9009
+blocks_storage:
+  backend: s3
+  s3:
+    endpoint: {{ s3_endpoint }}
+    bucket_name: {{ blocks_bucket_name }}
+    access_key_id: {{ keeper_mimir_ceph.record.login | join('') }}
+    secret_access_key: {{ keeper_mimir_ceph.record.password | join('') }}
+ruler_storage:
+  backend: s3
+  s3:
+    endpoint: {{ s3_endpoint }}
+    bucket_name: {{ ruler_bucket_name }}
+    access_key_id: {{ keeper_mimir_ceph.record.login | join('') }}
+    secret_access_key: {{ keeper_mimir_ceph.record.password | join('') }}
+ingester:
+  ring:
+    replication_factor: 1
