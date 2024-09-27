@@ -2,24 +2,6 @@
 
 This repository contains an Ansible playbook designed to automate the deployment of Grafana Mimir, scalable time-series database, onto an OpenShift cluster using Infrastructure as Code (IaC) principles.
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-  - [Clone the Repository](#clone-the-repository)
-  - [Install Ansible Collections](#install-ansible-collections)
-- [Configuration](#configuration)
-  - [Variables](#variables)
-  - [Secrets Management](#secrets-management)
-- [Running the Playbook](#running-the-playbook)
-  - [Specify the Environment](#specify-the-environment)
-- [Playbook Structure](#playbook-structure)
-- [Tasks Breakdown](#tasks-breakdown)
-- [License](#license)
-- [Contributing](#contributing)
-- [Support](#support)
-
 ## Overview
 
 The Ansible playbook in this repository automates the deployment of Grafana Mimir on an OpenShift cluster. It performs the following tasks:
